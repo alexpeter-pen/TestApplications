@@ -11,7 +11,7 @@ namespace WebApplication2.Models
         public int Id { get; set; }
         public string Title { get; set; }
 
-        [ForeignKey("PlanItem")]
+        [ForeignKey(nameof(PlanItem))]
         public int PlanItemId { get; set; }
 
         public PlanItem PlanItem { get; set; }

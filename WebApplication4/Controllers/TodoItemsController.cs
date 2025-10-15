@@ -11,6 +11,7 @@ using WebApplication4.Models;
 
 namespace WebApplication4.Controllers
 {
+    [Authorize]
     public class TodoItemsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -18,7 +19,7 @@ namespace WebApplication4.Controllers
         // GET: TodoItems
         public ActionResult Index()
         {
-            var todoItems = db.TodoItems.Include(t => t.PlanItem);
+            var todoItems = db.TodoItems.OrderBy(td => td.Title).Include(t => t.PlanItem);
             return View(todoItems.ToList());
         }
 

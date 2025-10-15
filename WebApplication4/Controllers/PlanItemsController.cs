@@ -11,6 +11,7 @@ using WebApplication4.Models;
 
 namespace WebApplication4.Controllers
 {
+    [Authorize]
     public class PlanItemsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -18,7 +19,7 @@ namespace WebApplication4.Controllers
         // GET: PlanItems
         public ActionResult Index()
         {
-            return View(db.PlanItems.ToList());
+            return View(db.PlanItems.OrderBy(p => p.Title).ToList());
         }
 
         // GET: PlanItems/Details/5
