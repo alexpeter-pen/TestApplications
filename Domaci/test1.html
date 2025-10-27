@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadatak 1</title>
+    <script src="jquery-3.7.1.min.js"></script>
+</head>
+<body>
+
+
+<h1 id="title">Naslov</h1>
+<button id="btn">Promeni</button>
+
+<script>
+ $(document).ready(function () {
+	$('#btn').on('click', function(){
+		$('#title').text('Zdravo, jQuery!');
+	});
+});
+</script>
+
+
+</body>
+</html>
