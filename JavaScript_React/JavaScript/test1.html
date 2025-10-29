@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadatak 1</title>
+	
+
+<script>
+// Mini pomoćnici:
+const qs = (sel, root=document)=>root.querySelector(sel);
+const qsa = (sel, root=document)=>Array.from(root.querySelectorAll(sel));
+// Event delegacija:
+function on(root, evt, sel, handler){
+    root.addEventListener(evt, e=>{
+        if(e.target.closest(sel)) handler(e, e.target.closest(sel));
+    });
+}
+// Jednostavan serialize(Form) -> query string:
+function serializeForm(form){
+    return new URLSearchParams(new FormData(form)).toString();
+}
+// Mali util za fade (bez jQuery):
+function fadeTo(el, target=1, dur=150){
+    el.style.transition = `opacity ${dur}ms`;
+    // osiguraj početnu vrednost
+    if(getComputedStyle(el).opacity==='') el.style.opacity = '1';
+    requestAnimationFrame(()=>{ el.style.opacity = String(target); });
+}
+</script>
+
+</head>
+<body>
+
+
+
+<h1 id="title">Naslov</h1>
+<button id="btn">Promeni</button>
+<script>
+    qs('#btn').addEventListener('click', ()=>{
+        qs('#title').textContent = 'Zdravo, JS!';
+    });
+</script>
+
+
+</body>
+</html>
