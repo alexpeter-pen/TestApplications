@@ -1,0 +1,36 @@
+﻿@model IEnumerable<B16_Matura.Models.Raspored>
+@{
+    var days = new[] { "Ponedeljak", "Utorak", "Sreda", "Četvrtak", "Petak" };
+    var groups = Model.GroupBy(x => x.Rbr).OrderBy(g => g.Key).ToList();
+}
+
+@{
+    ViewBag.Title = "Raspored časova";
+}
+
+<h2>Raspored časova</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Rbr</th>
+            @foreach (var d in days)
+            {
+                <th>@d</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var g in groups)
+        {
+            <tr>
+                <td>@g.Key</td>
+                @foreach (var d in days)
+                {
+                    var cell = g.FirstOrDefault(x => x.DanUNedelji == d)?.Predmet ?? "/";
+                    <td>@cell</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

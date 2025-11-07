@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Učitaj XML fajl";
+}
+
+@using (Html.BeginForm("UploadFile",
+                        "Home",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    <label for="file">Učitaj XML datoteku:</label>
+    <input type="file" name="file" id="file" text="Izaberi" />
+    <br>
+    <br>
+
+    <input type="submit" value="Učitaj" />
+
+    <br>
+    <br>
+
+    @ViewBag.Message
+}
