@@ -1,0 +1,62 @@
+﻿@model B18_Matura.Models.Prognoza
+
+@{
+    ViewBag.Title = "Prognoza";
+}
+
+<h3>@ViewBag.Title</h3>
+
+@using (Html.BeginForm("Prognoza", "Home", FormMethod.Get))
+{
+    <label for="nazivMesta">Mesto:</label>
+
+    @Html.DropDownList(
+        "nazivMesta",
+        (SelectList)ViewBag.Cities,
+        new { @class = "form-control", style = "width:200px; display:inline-block;" }
+    )
+
+    <button type="submit" class="btn btn-primary">Prikaži</button>
+}
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Šifra mesta")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mesto)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Naziv mesta")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NazivMesta)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Min temperatura")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MinTemperatura)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Max temperatura")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxTemperatura)
+        </dd>
+
+    </dl>
+</div>
+
+<img src="~/Content/img/@(Model.Vreme).png"
+     alt="@Model.Vreme"
+     style="width:128px; margin-left: 50px" />
