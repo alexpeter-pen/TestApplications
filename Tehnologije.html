@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mapa tehnologija: server/klijent & statično/dinamičko</title>
+<style>
+  :root{
+    --bg:#0b0f17; --ink:#e6eefb; --muted:#a9b7d0; --grid:#243044;
+    --accent:#4cc9f0; --card:#111827; --chip:#1f2937; --chip2:#0ea5e9; --chip3:#8b5cf6; --chip4:#10b981;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial}
+  header{padding:24px 16px 8px; text-align:center}
+  h1{margin:0 0 6px; font-size:24px}
+  p.lead{margin:0 auto; max-width:900px; color:var(--muted)}
+  .wrap{max-width:1100px; margin:24px auto; padding:0 16px 40px}
+
+  /* Diagram area */
+  .board{
+    position:relative; height:620px; border:1px solid var(--grid);
+    border-radius:16px; background:linear-gradient(180deg, #0f1422 0%, #0c1220 100%);
+    overflow:hidden;
+  }
+  /* Grid lines & axis labels */
+  .board::before, .board::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(to right, transparent 49.8%, var(--grid) 50%, transparent 50.2%),
+      linear-gradient(to bottom, transparent 49.8%, var(--grid) 50%, transparent 50.2%);
+    opacity:.7;
+  }
+  .axis{
+    position:absolute; color:var(--muted); font-size:13px; letter-spacing:.3px
+  }
+  .axis.x-left{left:10px; top:8px}
+  .axis.x-right{right:10px; top:8px}
+  .axis.y-top{left:10px; top:10px}
+  .axis.y-bottom{left:10px; bottom:10px}
+
+  /* Pins (tech chips) */
+  .pin{
+    position:absolute; transform:translate(-50%,-50%);
+    background:var(--chip); border:1px solid #2b364a; color:var(--ink);
+    padding:8px 12px; border-radius:999px; cursor:pointer;
+    box-shadow:0 10px 20px rgba(0,0,0,.25);
+    display:flex; align-items:center; gap:8px; transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .pin:hover{ transform:translate(-50%,-50%) scale(1.04); box-shadow:0 16px 32px rgba(0,0,0,.35) }
+  .pin .dot{width:8px; height:8px; border-radius:50%}
+  .t-blue .dot{background:var(--chip2)}
+  .t-purple .dot{background:var(--chip3)}
+  .t-green .dot{background:var(--chip4)}
+  .t-gray .dot{background:#94a3b8}
+
+  /* Floating cards */
+  details{
+    margin:14px 0; background:var(--card); border:1px solid #233044; border-radius:14px; overflow:hidden;
+  }
+  summary{
+    list-style:none; cursor:pointer; padding:12px 14px; font-weight:600;
+    display:flex; align-items:center; gap:10px;
+  }
+  summary::-webkit-details-marker{display:none}
+  .badge{font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid #334155; color:#cbd5e1}
+  .body{padding:0 14px 14px; color:#dbe4f3}
+  .hint{color:var(--muted); font-size:13px; margin-top:6px}
+
+  pre{
+    margin:10px 0 0; padding:12px; background:#0b1020; border:1px solid #202a44; border-radius:10px;
+    overflow:auto; color:#e5eefb; font-size:13px;
+  }
+  code{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace}
+
+  /* Legend */
+  .legend{
+    display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 0; color:#cbd5e1; font-size:13px
+  }
+  .legend span{display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid #334155; border-radius:999px}
+  .legend i{width:10px; height:10px; border-radius:50%}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Mapa tehnologija: Server/Klijent & Statično/Dinamičko</h1>
+    <p class="lead">
+      Pozicioniranje je <em>dominantna</em> upotreba u praksi (naravno, neke tehnologije mogu biti i na drugoj strani).
+      Klikni na značku ispod mape za objašnjenje i mali primer koda.
+    </p>
+  </header>
+
+  <div class="wrap">
+
+    <div class="board" role="img" aria-label="Koordinatni sistem sa osama Server/Klijent i Statično/Dinamičko">
+      <!-- Axis labels -->
+      <div class="axis x-left">Server strana</div>
+      <div class="axis x-right">Klijentska strana</div>
+      <div class="axis y-top" style="left:50%; transform:translateX(-50%)">Statično</div>
+      <div class="axis y-bottom" style="left:50%; transform:translateX(-50%)">Dinamičko</div>
+
+      <!-- Pins (x%, y%) -->
+      <!-- Server + Dinamičko (donje-levo) -->
+      <button class="pin t-blue" style="left:18%; top:72%"><span class="dot"></span>C#</button>
+      <button class="pin t-blue" style="left:30%; top:78%"><span class="dot"></span>Controller</button>
+      <button class="pin t-blue" style="left:22%; top:66%"><span class="dot"></span>Model</button>
+      <button class="pin t-blue" style="left:34%; top:68%"><span class="dot"></span>Razor</button>
+      <button class="pin t-blue" style="left:28%; top:86%"><span class="dot"></span>LINQ</button>
+      <button class="pin t-blue" style="left:16%; top:84%"><span class="dot"></span>Baza (Database)</button>
+      <button class="pin t-blue" style="left:10%; top:76%"><span class="dot"></span>Web Service</button>
+
+      <!-- Server + Statično (gore-levo) -->
+      <button class="pin t-gray" style="left:16%; top:24%"><span class="dot"></span>XML</button>
+
+      <!-- Klijent + Statično (gore-desno) -->
+      <button class="pin t-green" style="left:82%; top:26%"><span class="dot"></span>HTML</button>
+      <button class="pin t-green" style="left:72%; top:24%"><span class="dot"></span>CSS</button>
+
+      <!-- Klijent + Dinamičko (dole-desno) -->
+      <button class="pin t-purple" style="left:84%; top:78%"><span class="dot"></span>JavaScript</button>
+      <button class="pin t-purple" style="left:62%; top:62%"><span class="dot"></span>View</button>
+    </div>
+
+    <div class="legend">
+      <span><i style="background:#0ea5e9"></i> tipično server</span>
+      <span><i style="background:#8b5cf6"></i> tipično klijent (dinamično)</span>
+      <span><i style="background:#10b981"></i> tipično klijent (statično)</span>
+      <span><i style="background:#94a3b8"></i> razmena/format</span>
+    </div>
+
+    <!-- CARDS: objašnjenja i kratki primeri koda -->
+    <section aria-label="Objašnjenja i primeri">
+      <details open>
+        <summary><span class="badge">C#</span> — Server, dinamička logika</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na serveru (.NET) za poslovnu logiku, validacije, servise, repozitorijume.  
+          <div class="hint">Dinamički generiše odgovore, poziva bazu i servise.</div>
+          <pre><code>// Service primer
+public interface IClock { DateTime Now(); }
+public class Clock : IClock { public DateTime Now() =&gt; DateTime.UtcNow; }</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">Controller</span> — MVC ulazna tačka (server)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na serveru; prima HTTP zahtev, orkestrira Model/Servise i vraća View ili JSON.  
+          <pre><code>// ASP.NET MVC 5 (Framework 4.6.1)
+public class PrognozaController : Controller
+{
+  public ActionResult Prikaz(string grad = "Beograd")
+  {
+    var vm = PrognozaRepoza.GetByCity(grad);
+    return View(vm); // vraća Razor pogled
+  }
+}</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">Model</span> — Podaci & pravila (server)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na serveru; nosi podatke i invarijante domena, često mapiran na bazu.  
+          <pre><code>public class Prognoza {
+  public string Mesto { get; set; }
+  public string NazivMesta { get; set; }
+  public int MinTemperatura { get; set; }
+  public int MaxTemperatura { get; set; }
+  public string Vreme { get; set; }
+}</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">Razor</span> — Server templating → HTML</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na serveru; meša C# sa HTML-om i generiše statički HTML odgovor.  
+          <pre><code>@model Prognoza
+&lt;h2&gt;@Model.NazivMesta&lt;/h2&gt;
+&lt;p&gt;Min: @Model.MinTemperatura, Max: @Model.MaxTemperatura&lt;/p&gt;</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">LINQ</span> — Upiti nad kolekcijama (server)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Najčešće na serveru; filtriranje/projekcije nad kolekcijama ili IQueryable.  
+          <pre><code>var topli = prognoze.Where(p =&gt; p.MaxTemperatura &gt;= 20)
+                    .OrderBy(p =&gt; p.NazivMesta)
+                    .ToList();</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">Database</span> — Trajno skladište (server)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na serveru; SQL/NoSQL, transakcije, indeksiranje.  
+          <pre><code>-- SQL primer
+SELECT NazivMesta, MinTemperatura, MaxTemperatura
+FROM Prognoza
+WHERE MaxTemperatura &gt;= 20
+ORDER BY NazivMesta;</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">Web Service</span> — API endpoint (server)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na serveru; izlaže JSON/XML za klijente i druge servise.  
+          <pre><code>// Web API 2 (Framework 4.6.1)
+[RoutePrefix("api/prognoza")]
+public class PrognozaApiController : ApiController
+{
+  [HttpGet, Route("{grad}")]
+  public IHttpActionResult Get(string grad)
+  {
+    var p = ProgRepo.GetByCity(grad);
+    if (p == null) return NotFound();
+    return Ok(p);
+  }
+}</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">XML</span> — Format razmene (server & klijent)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Kao konfiguracija, ugovor, ili dataset; često čuvan/obrađen na serveru.  
+          <pre><code>&lt;Prognoza&gt;
+  &lt;NazivMesta&gt;Niš&lt;/NazivMesta&gt;
+  &lt;MaxTemperatura&gt;10&lt;/MaxTemperatura&gt;
+&lt;/Prognoza&gt;</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">HTML</span> — Struktura (klijent, statično)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na klijentu; kostur stranice i semantika.  
+          <pre><code>&lt;section&gt;
+  &lt;h2&gt;Prognoza&lt;/h2&gt;
+  &lt;div class="karta"&gt;Beograd — vedro&lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">CSS</span> — Stil (klijent, statično)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na klijentu; izgled, raspored, animacije.  
+          <pre><code>.karta{ padding:8px 12px; background:#0b1020; color:#e6eefb; border-radius:10px }</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">JavaScript</span> — Dinamika UI (klijent)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na klijentu; interakcije, validacije, pozivi API-ju.  
+          <pre><code>// Učitavanje sa API-ja i popuna liste
+fetch('/api/prognoza/Beograd')
+  .then(r =&gt; r.json())
+  .then(p =&gt; document.querySelector('.karta').textContent =
+        p.NazivMesta + ' — ' + p.Vreme);</code></pre>
+        </div>
+      </details>
+
+      <details>
+        <summary><span class="badge">View</span> — UI sloj (server → klijent)</summary>
+        <div class="body">
+          <strong>Gde se koristi:</strong> Na serveru (Razor) generiše HTML, koji je na klijentu statičan dok JS ne interveniše.  
+          <pre><code>@model IEnumerable&lt;Prognoza&gt;
+&lt;ul&gt;
+@foreach(var p in Model){
+  &lt;li&gt;@p.NazivMesta — @p.Vreme (@p.MinTemperatura–@p.MaxTemperatura)&lt;/li&gt;
+}
+&lt;/ul&gt;</code></pre>
+        </div>
+      </details>
+    </section>
+  </div>
+
+  <script>
+    // Prikaži maleni tooltip efekt pri hover-u (naslovne etikete)
+    document.querySelectorAll('.pin').forEach(pin => {
+      pin.addEventListener('mouseenter', () => pin.setAttribute('aria-pressed','true'));
+      pin.addEventListener('mouseleave', () => pin.removeAttribute('aria-pressed'));
+    });
+  </script>
+</body>
+</html>
